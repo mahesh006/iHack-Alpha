@@ -1,0 +1,128 @@
+<!DOCTYPE html> 
+<html>
+    <head>        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://hammerjs.github.io/dist/hammer.js"></script>       
+        <style type="text/css">
+
+            body{                
+                background: rgb(211,211,211); 
+                padding: 16px;   
+            }
+
+            #chat-window{
+                height: 560px;
+                overflow: auto;
+                background: white;
+                cursor: pointer;
+                border-radius: 16px;
+                box-shadow: -1px 1px 6px 6px skyblue;
+            }
+
+            #output p{
+                padding: 70px 0;  
+                text-align: center;
+            }
+
+            #output strong{
+                color: #575ed8;
+            }
+
+            input{
+                padding: 10px 20px;
+                box-sizing: border-box;
+                background: white;
+                border: 0;
+                display: block;
+                width: 100%;
+                background: #fff;
+                border-bottom: 3px solid  #87ceeb;   
+                font-family: Nunito;
+                font-size: 16px;
+                margin-top: 6px;
+                border-radius: 16px;
+                box-shadow: -1px 1px 6px 6px skyblue;
+                color: rgb(211,211,211);
+            }
+            .chat-messages {
+              padding: 30px;
+              max-height: 500px;
+              overflow-y: scroll;
+              text-align: center;
+            }
+               
+            .chat-main {
+                display: block;
+            }
+
+            .chat-sidebar {
+                display: none;
+            }
+            #snackbar {
+              visibility: hidden;
+              min-width: 250px;
+              margin-left: -156px;
+              background-color: #333;
+              color: #fff;
+              text-align: center;
+              border-radius: 2px;
+              padding: 16px;
+              position: fixed;
+              z-index: 1;
+              left: 50%;
+              bottom: 30px;
+              font-size: 17px;
+            }
+
+            #snackbar.show {
+              visibility: visible;
+              -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+              animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            }
+
+            @-webkit-keyframes fadein {
+              from {bottom: 0; opacity: 0;} 
+              to {bottom: 30px; opacity: 1;}
+            }
+
+            @keyframes fadein {
+              from {bottom: 0; opacity: 0;}
+              to {bottom: 30px; opacity: 1;}
+            }
+
+            @-webkit-keyframes fadeout {
+              from {bottom: 30px; opacity: 1;} 
+              to {bottom: 0; opacity: 0;}
+            }
+
+            @keyframes fadeout {
+              from {bottom: 30px; opacity: 1;}
+              to {bottom: 0; opacity: 0;}
+            }                
+        </style>
+    </head>
+    <body onload="activate()">             
+        <div id="chat-window"> 
+            <div class="chat-sidebar">
+              <h3>Room Name:</h3>
+              <h2 id="room-name"></h2>
+              <h3>Users</h3>
+              <ul id="users"></ul>
+            </div>               
+            <div class="chat-messages"></div>
+            <div id="snackbar">Please Tap the screen to activate vibrations</div>
+        </div>           
+        <input id="msg" type="text" placeholder="Message" />      
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
+          integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4=" crossorigin="anonymous"></script>  
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+        <script type="text/javascript">       
+        function activate() {
+          var x = document.getElementById("snackbar");
+          x.className = "show";
+          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3500);
+        }
+        </script>
+        <script src="js/main.js"></script>
+    </body>
+</html>

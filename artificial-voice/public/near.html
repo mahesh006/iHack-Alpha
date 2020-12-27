@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<head>    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content= "ie=edge">    
+    <script src="js/jquery.js"></script>
+    <script src="https://hammerjs.github.io/dist/hammer.js"></script>     
+</head> 
+<style type="text/css">
+    *{
+      margin: 0;
+      padding: 1px 6px ;
+      box-sizing: border-box;
+      padding-bottom: 6px;
+    }
+    body{
+	    background-color:#c7b8f5;  
+    }
+  	.row > div {		
+  		height: 300px;
+  		background-color: white;		
+  		line-height: 300px ;
+  		justify-content: center;	
+  		font-weight: 500; 
+		  border-radius: 16px;
+      box-shadow: -1px 1px 6px 6px skyblue;
+      cursor: pointer;
+  	} 
+    #message {
+        box-sizing: border-box;
+        background: #eee;
+        border: 0;        
+        width: 100%;
+        background: #fff;
+        border-bottom: 3px solid  #87ceeb;   
+        font-family: Nunito;
+        font-size: 16px;
+        margin-top: 6px;
+        border-radius: 16px;
+        box-shadow: -1px 1px 6px 6px skyblue; 
+        color: rgb(211,211,211);
+    }	
+    #confirmation-modal{
+      display: none
+    }
+    #snackbar {
+      visibility: hidden;
+      min-width: 250px;
+      margin-left: -156px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+      font-size: 17px;
+    }
+
+    #snackbar.show {
+      visibility: visible;
+      -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @-webkit-keyframes fadein {
+      from {bottom: 0; opacity: 0;} 
+      to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadein {
+      from {bottom: 0; opacity: 0;}
+      to {bottom: 30px; opacity: 1;}
+    }
+
+    @-webkit-keyframes fadeout {
+      from {bottom: 30px; opacity: 1;} 
+      to {bottom: 0; opacity: 0;}
+    }
+
+    @keyframes fadeout {
+      from {bottom: 30px; opacity: 1;}
+      to {bottom: 0; opacity: 0;}
+    }                
+  	
+</style>
+<body onload="activate()"> 
+	<div class="container" id="content">		
+		<div class="row">
+			<div class="col s12" id="area"> </div>                
+    </div>       
+    <div id="record" class="row">			
+      <div class="col s12" id="area1"></div>        
+    </div>
+    <input id="message" type="text"/>
+  </div>
+  <div class="audio-box mt-4">
+      <div id="demo">
+          <audio id="audio" onclick="playAudio()" controls>
+              <source src="" type='audio/mp3'>
+          </audio>
+      </div>
+    </div>
+  <div id="confirmation-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header border-buttomoNone">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title modal-head">Warning</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="errorTxt"></p>
+                </div>
+                <div class="modal-footer border-topNone">
+                    <button type="button" class="btn-solid" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>  
+    <div id="snackbar">Please Tap the screen to activate vibrations</div>
+  <script src="app.js"></script>
+  <script src="src/recorder.js"></script>
+  <script src="src/Fr.voice.js"></script>
+  <script src="js/asr.js"></script>
+  <script type="text/javascript">
+    var apikey = "BFD166A991A24006B34C";
+    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function(stream) {
+        console.log('You let me use your mic!')
+      })
+      .catch(function(err) {
+        console.log('No mic for you!')
+      });
+    var area = document.getElementById('area');
+    var input = document.getElementById("message");
+
+  	var mc = new Hammer(area); 
+
+  	mc.on("tap press swiperight swipeleft doubletap", function(ev) {
+  	  if (ev.type == 'tap'){
+  	   let val = ".";
+          input.value += val;
+  	    navigator.vibrate(200);
+  	  }else if(ev.type == 'press'){
+  	    navigator.vibrate(400);
+        let val = "-";
+          input.value += val;	    
+  	  }else if(ev.type == 'swipeleft'){
+  	    let val = "  ";
+  	    input.value += val;
+  	    navigator.vibrate(300);
+  	  }else if(ev.type == 'swiperight'){
+        keyPressMe(); 
+      }else if(ev.type == 'doubletap'){ 
+        var trim = String(input.value);
+        input.value = trim.substr(0,trim.length - 3);      
+        navigator.vibrate(300);
+      }
+    });   
+
+  	function decodeMorse(morseCode) {
+  	  var ref = { 
+  	    '.-':     'a',
+  	    '-...':   'b',
+  	    '-.-.':   'c',
+  	    '-..':    'd',
+  	    '.':      'e',
+  	    '..-.':   'f',
+  	    '--.':    'g',
+  	    '....':   'h',
+  	    '..':     'i',
+  	    '.---':   'j',
+  	    '-.-':    'k',
+  	    '.-..':   'l',
+  	    '--':     'm',
+  	    '-.':     'n',
+  	    '---':    'o',
+  	    '.--.':   'p',
+  	    '--.-':   'q',
+  	    '.-.':    'r',
+  	    '...':    's',
+  	    '-':      't',
+  	    '..-':    'u',
+  	    '...-':   'v',
+  	    '.--':    'w',
+  	    '-..-':   'x',
+  	    '-.--':   'y',
+  	    '--..':   'z',
+  	    '.----':  '1',
+  	    '..---':  '2',
+  	    '...--':  '3',
+  	    '....-':  '4',
+  	    '.....':  '5',
+  	    '-....':  '6',
+  	    '--...':  '7',
+  	    '---..':  '8',
+  	    '----.':  '9',
+  	    '-----':  '0',  
+  	    '/'    :  '   ',
+  	  };
+
+  	  return morseCode
+  	    .split('   ')
+  	    .map(
+  	      a => a
+  	        .split(' ')
+  	        .map(
+  	          b => ref[b]
+  	        ).join('')
+  	    ).join(' ');
+    }
+  	
+    function morse(input) { 
+     const    
+        outputType = 'vibrate', 
+        dit = 200,
+        dah = dit * 2,
+        symbolSpace = dit,
+        letterSpace = dah,
+        wordSpace = dit * 6,    
+        morseChars = {
+          " "  : "/",
+          "a"  : "·−",
+          "b"  : "−···",
+          "c"  : "−·−·",
+          "d"  : "−··",
+          "e"  : "·",
+          "f"  : "··−·",
+          "g"  : "−−·",
+          "h"  : "····",
+          "i"  : "··",
+          "j"  : "·−−−",
+          "k"  : "−·−",
+          "l"  : "·−··",
+          "m"  : "−−",
+          "n"  : "−·",
+          "o"  : "−−−",
+          "p"  : "·−−·",
+          "q"  : "−−·−",
+          "r"  : "·−·",
+          "s"  : "···",
+          "t"  : "−",
+          "u"  : "··−",
+          "v"  : "···−",
+          "w"  : "·−−",
+          "x"  : "−··−",
+          "y"  : "−·−−",
+          "z"  : "−−··",
+          "1"  : "·−−−−",
+          "2"  : "··−−−",
+          "3"  : "···−−",
+          "4"  : "····−",
+          "5"  : "·····",
+          "6"  : "−····",
+          "7"  : "−−···",
+          "8"  : "−−−··",
+          "9"  : "−−−−·",
+          "0"  : "−−−−−",
+          "à"  : "·−−·−",
+          "ä"  : "·−·−",
+          "è"  : "·−··−",
+          "é"  : "··−··",
+          "ö"  : "−−−·",
+          "ü"  : "··−−",
+          "ß"  : "···−−··",
+          "ñ"  : "−−·−−",
+          "."	 : "·−·−·−",
+          ","	 : "−−··−−",
+          ":"	 : "−−−···",
+          ";"	 : "−·−·−·",
+          "?"	 : "··−−··",
+          "-"	 : "−····−",
+          "_"  : "··−−·−",
+          "("	 : "−·−−·",
+          ")"	 : "−·−−·−",
+          "'"	 : "·−−−−·",
+          "="	 : "−···−",
+          "+"	 : "·−·−·",
+          "/"	 : "−··−·",
+          "@"	 : "·−−·−·"
+    };     
+  
+  
+    function inputToMorse(input) {
+      if (!input) {return;}
+      const characters = input.toLowerCase().trim().split('');
+      let output = [];
+      characters.forEach(character => {
+        if (morseChars[character]) {
+          output.push(morseChars[character]);
+        }
+      });
+      return output;
+    }
+  
+    function morseCodeToTime(input) {
+      let output = []; 
+      let morseCode = inputToMorse(input);
+      morseCode.forEach((set, index) => {
+        let singleCharacters = set.split('');
+        singleCharacters.forEach(char => {
+          switch (char) {
+            case "/":
+              output.pop();
+              output.push(wordSpace);
+              break;
+            case "·":
+              output.push(dit, symbolSpace);
+              break;
+            case "−":
+              output.push(dah, symbolSpace);
+              break;
+          }
+        });
+        if (output.slice(-1)[0] !== wordSpace) {
+          output.pop();
+          output.push(letterSpace);
+        }
+      });
+      return output;
+    }
+    function runSequence(input) {
+      let timeSequence = morseCodeToTime(input);
+      navigator.vibrate(timeSequence);    
+    };
+    runSequence(input);
+    };  
+    document.getElementById("demo").style.display = "none";
+ 
+  //Process
+  function keyPressMe() {
+    document.getElementById("demo").style.display = "none";
+    audio.pause();
+    var language = 1;
+    var text = decodeMorse(input.value);
+    var url = "";
+    // Calling TTS ENG
+    if (language == 1) {
+      url = "https://apis.sentient.io/microservices/voice/ttseng/v0.1/getpredictions";
+      if (text.length >= 2001) {
+        $("#confirmation-modal").modal();
+        document.getElementById("errorTxt").innerHTML = "Speech Content allow upto 2000 Characters. Please Try Again";
+        return false;
+      }
+    }
+    
+    // Process API
+    $.ajax({
+      url: url,
+      method: "POST",
+      headers: { 'x-api-key': apikey },
+      contentType: 'application/json',
+      data: JSON.stringify({ "text": text, "language": language }),
+      timeout: 80000,
+      success: function (result) {
+        // Response
+        var audioString = "data:audio/mp3;base64," + result.audioContent;
+        var audio = document.getElementById('audio');
+        audio.src = audioString;
+        audio.crossOrigin = 'anonymous';
+        audio.play();
+      }, error: function (err) {
+        document.getElementById("confirmation-modal").style.display = "block";
+        $("#confirmation-modal").modal();
+        document.getElementById("errorTxt").innerHTML = "Please check your content and Try Again...";
+      }
+    });
+  }
+  
+  // Play audio method
+  window.playAudio = function () {
+    audio.crossOrigin = 'anonymous';
+    audio.play();
+  }
+
+  function activate() {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3500);
+  }
+
+  </script>
+</body>
+</html> 

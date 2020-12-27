@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+      crossorigin="anonymous"
+    />
+    <script src="https://hammerjs.github.io/dist/hammer.js"></script>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+    :root {
+      --dark-color-a: #667aff;
+      --dark-color-b: #7386ff;
+      --light-color: #e6e9ff;
+      --success-color: #5cb85c;
+      --error-color: #d9534f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
+      background: var(--light-color);
+      margin: 20px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .btn {
+      cursor: pointer;
+      padding: 5px 15px;
+      background-color: #08d;
+      color: white;
+      border: 0;
+      font-size: 17px;
+      margin-top: 12px;
+      margin-left: 5px;
+      border-radius: 12px;
+      box-sizing: border-box;
+      display: block;
+    }
+
+    .chat-container {
+      max-width: 1100px;
+      background: #fff;
+      margin: 30px auto;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: var(--dark-color-a);
+      color: #fff;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .chat-header h1, ul {
+      font-size: 14px;
+      padding-left: 10px
+    }
+
+    .chat-messages {
+      padding: 30px;
+      max-height: 500px;
+      overflow-y: scroll;
+    }
+
+    .chat-messages .message {
+      padding: 10px;
+      margin-bottom: 15px;
+      background-color: var(--light-color);
+      border-radius: 5px;
+      overflow-wrap: break-word;
+    }
+
+    .chat-messages .message .meta {
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--dark-color-b);
+      opacity: 0.7;
+      margin-bottom: 7px;
+    }
+
+    .chat-messages .message .meta span {
+      color: #777;
+    }
+
+    .chat-form-container {
+      display: flex;
+      padding: 4px 30px 4px;
+      background-color: skyblue;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      margin-right: 10px
+    }
+
+    .chat-form-container form {
+      display: flex;
+    }
+
+    .chat-form-container input[type='text'] {
+      padding: 10px 20px;
+      box-sizing: border-box;    
+      border: 0;
+      display: block;
+      width: 100%;
+      background: #fff; 
+      font-family: Nunito;
+      font-size: 16px;
+      margin-top: 12px;
+      border-radius: 16px;    
+      color:black;      
+    }
+
+  .chat-main {
+    display: block;
+  }
+
+  .chat-sidebar {
+    display: none;
+  }
+  </style>
+  </head>
+  <body>
+    <div id="chat-window">               
+    </div> 
+    <div class="chat-container">
+      <header class="chat-header">
+        <a href="normalchatlogin.html" class="btn">Exit</a>             
+      </header>
+      <main class="chat-main">
+        <div class="chat-sidebar">
+          <h3>Room Name:</h3>
+          <h2 id="room-name"></h2>
+          <h3>Users</h3>
+          <ul id="users"></ul>
+        </div>
+        <div class="chat-messages"></div>
+      </main>
+      <div class="chat-form-container">
+        <form id="chat-form">
+          <input
+            id="msg"
+            type="text"
+            placeholder="Enter Message"
+            required
+            autocomplete="off"
+          />           
+        </form>
+        <button class="btn" onclick="send()"> Send</button>
+      </div>     
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
+      integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>   
+    <script src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <style type="text/css">
+    :root {
+      --primary-color: #cc0000;
+      --secondary-color: #7c0000;
+    }
+    * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+  
+    html,body  {  
+       height: 100%;
+       background-color:rgb(211,211,211);      
+
+    }
+    body {
+      flex-direction: column;
+      display: flex;      
+      font-family: 'Roboto', sans-serif;
+    }
+    .content {
+      flex: 1 0 auto;      
+      padding-top: 10%;
+    }
+    .container {
+      width: 90%;
+      margin: 0 auto;
+      padding: 10px;
+      overflow: none;
+    }
+    .app-header {
+      background: var(--primary-color);
+          box-shadow: 3px 3px 10px #888888;
+    }
+    .app-header {
+          background: var(--primary-color);
+          box-shadow: 3px 3px 10px #888888;
+        }
+
+.app-header .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: space-between; */
+  justify-content: center;
+  padding: 15px 10px;
+}
+
+.app-header .logo {
+  width: 170px;
+  margin-bottom: 1rem;
+}
+
+.app-header input[type='text'] {
+  padding: 7px;
+  border: #777;
+  width: 300px;
+  border-radius: 3px;
+}
+
+.subheader {
+  
+  box-shadow: 5px 5px 5px 5px rgba(0.2,0.2,0.2,0.2);
+  border-radius: 16px;
+  background: var(--secondary-color);
+  color: #fff;
+  
+  font-size: 14px;
+  padding: 10px;
+  width: 90%;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subheader p {
+  margin: 4px;
+}
+
+.subheader img {
+  width: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px 20px;
+
+}
+
+.grid .item {
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  padding: 16px;
+  background:white; 
+  box-shadow: -1px 1px 6px 6px skyblue;
+  background-color: white;
+}
+
+.grid .item h4 {
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.grid .item p {
+  font-size: 14px;
+  color: var(--secondary-color);
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.grid .item img {
+  width: 30px;
+  text-align: right;
+  display: block;
+  align-self: flex-end;
+}
+.btn {
+  width: 100%;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+  padding: 0.5rem;
+  background-color: orange;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+
+
+.txt {
+  font-size: 10px;
+  display: row;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: space-between; */
+  justify-content: center;
+  padding: 15px 10px;
+  text-align: start;
+  color: white;
+}
+
+.app-footer {
+  flex-shrink: 0;
+  background: white;
+  color: #444;
+  padding: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.app-footer ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.app-footer ul li {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #00ffff;
+  cursor: pointer;
+  
+}
+
+.app-footer ul li a {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: orange;
+  cursor: pointer;
+  
+}
+
+
+.app-footer ul li i {
+  font-size: 22px;
+}
+
+
+
+hr.new1 {
+  margin-top: 4px;
+  border-top: 1px solid white;
+  color: white;
+  background-color: white;
+  border-radius: 16px;
+}
+
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px 20px;
+  }
+    .content {
+      flex: 1 0 auto;      
+      padding-top: 5%;
+    }
+    
+
+  .grid .item img {
+    width: 60px;
+  }
+}
+
+
+
+
+  </style>
+</head>
+<body>
+
+
+    <div class="content"> 
+    <div>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+      
+      <div class="txt">
+          <h1>Communicating Platform</h1>
+           <hr class="new1"> 
+    </div> 
+
+
+      <div class="grid container">
+            <div class="item">
+          <h4>Far</h4>
+          <img src="/one.png">                
+          <button class='btn' onclick="location.href='/far'">Start</button>
+        </div>
+        <div class="item">
+          <h4>Near</h4>         
+          <img src="/one.png">
+          <button class='btn' onclick="location.href='/near'">Start</button>
+        </div>
+        
+      </div> 
+       <div class="txt">
+          <h1>Learning Platform</h1>
+          <hr class="new1"> 
+      </div>
+         
+
+        <div class="grid container">
+          
+        <div class="item">
+          <h4>Eslate</h4>
+          
+          <img src="/one.png">
+          <button class='btn' onclick="location.href='/Eslate'">Start</button>
+        </div>
+        <div class="item">
+          <h4>Dictionary</h4>
+          
+          <img src="/one.png">
+          <button class='btn' onclick="location.href='/dictionary'">Start</button>
+        </div>
+        <div class="item">
+          <h4>learn</h4>
+          
+          <img src="/one.png">
+          <button class='btn' onclick="location.href='/learn'">Start</button>
+        </div>
+        <div class="item">
+          <h4>Guess</h4>
+          
+          <img src="/one.png">
+          <button class='btn' onclick="location.href='/game'">Start</button>
+        </div>
+      </div>        
+      </div>
+    </div>
+
+</body>
+</html>
